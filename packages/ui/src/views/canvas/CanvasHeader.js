@@ -26,7 +26,7 @@ import useApi from 'hooks/useApi'
 
 // utils
 import { generateExportFlowData } from 'utils/genericHelper'
-import { uiBaseURL } from 'store/constant'
+import { uiBaseURL, urlPrefix } from 'store/constant'
 import { SET_CHATFLOW } from 'store/actions'
 
 // ==============================|| CANVAS HEADER ||============================== //
@@ -202,7 +202,9 @@ const CanvasHeader = ({ chatflow, handleSaveFlow, handleDeleteFlow, handleLoadFl
                         }}
                         color='inherit'
                         onClick={() =>
-                            window.history.state && window.history.state.idx > 0 ? navigate(-1) : navigate('/', { replace: true })
+                            window.history.state && window.history.state.idx > 0
+                                ? navigate(-1)
+                                : navigate(urlPrefix + '/', { replace: true })
                         }
                     >
                         <IconChevronLeft stroke={1.5} size='1.3rem' />

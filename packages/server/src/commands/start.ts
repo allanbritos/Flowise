@@ -43,7 +43,8 @@ export default class Start extends Command {
         LANGCHAIN_ENDPOINT: Flags.string(),
         LANGCHAIN_API_KEY: Flags.string(),
         LANGCHAIN_PROJECT: Flags.string(),
-        DISABLE_FLOWISE_TELEMETRY: Flags.string()
+        DISABLE_FLOWISE_TELEMETRY: Flags.string(),
+        PUBLIC_URL: Flags.string()
     }
 
     async stopProcess() {
@@ -79,7 +80,7 @@ export default class Start extends Command {
         })
 
         const { flags } = await this.parse(Start)
-
+        if (flags.PUBLIC_URL) process.env.PUBLIC_URL = flags.PUBLIC_URL
         if (flags.PORT) process.env.PORT = flags.PORT
         if (flags.CORS_ORIGINS) process.env.CORS_ORIGINS = flags.CORS_ORIGINS
         if (flags.IFRAME_ORIGINS) process.env.IFRAME_ORIGINS = flags.IFRAME_ORIGINS

@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles'
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 import ItemCard from 'ui-component/cards/ItemCard'
-import { gridSpacing } from 'store/constant'
+import { gridSpacing, urlPrefix } from 'store/constant'
 import WorkflowEmptySVG from 'assets/images/workflow_empty.svg'
 import LoginDialog from 'ui-component/dialog/LoginDialog'
 import ConfirmDialog from 'ui-component/dialog/ConfirmDialog'
@@ -69,11 +69,11 @@ const Chatflows = () => {
     }
 
     const addNew = () => {
-        navigate('/canvas')
+        navigate(urlPrefix + '/canvas')
     }
 
     const goToCanvas = (selectedChatflow) => {
-        navigate(`/canvas/${selectedChatflow.id}`)
+        navigate(urlPrefix + `/canvas/${selectedChatflow.id}`)
     }
 
     useEffect(() => {

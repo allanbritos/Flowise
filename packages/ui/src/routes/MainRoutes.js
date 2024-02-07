@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import config from '../config'
 
 // project imports
 import MainLayout from 'layout/MainLayout'
@@ -26,41 +27,41 @@ const Credentials = Loadable(lazy(() => import('views/credentials')))
 const Variables = Loadable(lazy(() => import('views/variables')))
 
 // ==============================|| MAIN ROUTING ||============================== //
-
+console.log({ BASEPATH: config.basePath })
 const MainRoutes = {
-    path: '/',
+    path: config.basePath,
     element: <MainLayout />,
     children: [
         {
-            path: '/',
+            path: config.basePath,
             element: <Chatflows />
         },
         {
-            path: '/chatflows',
+            path: config.basePath + '/chatflows',
             element: <Chatflows />
         },
         {
-            path: '/marketplaces',
+            path: config.basePath + '/marketplaces',
             element: <Marketplaces />
         },
         {
-            path: '/apikey',
+            path: config.basePath + '/apikey',
             element: <APIKey />
         },
         {
-            path: '/tools',
+            path: config.basePath + '/tools',
             element: <Tools />
         },
         {
-            path: '/assistants',
+            path: config.basePath + '/assistants',
             element: <Assistants />
         },
         {
-            path: '/credentials',
+            path: config.basePath + '/credentials',
             element: <Credentials />
         },
         {
-            path: '/variables',
+            path: config.basePath + '/variables',
             element: <Variables />
         }
     ]

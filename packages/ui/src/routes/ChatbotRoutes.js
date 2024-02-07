@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import config from '../config'
 
 // project imports
 import Loadable from 'ui-component/loading/Loadable'
@@ -10,11 +11,11 @@ const ChatbotFull = Loadable(lazy(() => import('views/chatbot')))
 // ==============================|| CANVAS ROUTING ||============================== //
 
 const ChatbotRoutes = {
-    path: '/',
+    path: config.basePath,
     element: <MinimalLayout />,
     children: [
         {
-            path: '/chatbot/:id',
+            path: config.basePath + '/chatbot/:id',
             element: <ChatbotFull />
         }
     ]

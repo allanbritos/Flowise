@@ -47,7 +47,7 @@ const MarketplaceCanvas = () => {
 
     const onChatflowCopy = (flowData) => {
         const templateFlowData = JSON.stringify(flowData)
-        navigate(`/canvas`, { state: { templateFlowData } })
+        navigate(urlPrefix + `/canvas`, { state: { templateFlowData } })
     }
 
     return (

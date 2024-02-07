@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import config from '../config'
 
 // project imports
 import Loadable from 'ui-component/loading/Loadable'
@@ -11,19 +12,19 @@ const MarketplaceCanvas = Loadable(lazy(() => import('views/marketplaces/Marketp
 // ==============================|| CANVAS ROUTING ||============================== //
 
 const CanvasRoutes = {
-    path: '/',
+    path: config.basePath,
     element: <MinimalLayout />,
     children: [
         {
-            path: '/canvas',
+            path: config.basePath + '/canvas',
             element: <Canvas />
         },
         {
-            path: '/canvas/:id',
+            path: config.basePath + '/canvas/:id',
             element: <Canvas />
         },
         {
-            path: '/marketplace/:id',
+            path: config.basePath + '/marketplace/:id',
             element: <MarketplaceCanvas />
         }
     ]

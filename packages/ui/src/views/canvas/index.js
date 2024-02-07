@@ -45,7 +45,7 @@ import { getUniqueNodeId, initNode, rearrangeToolsOrdering, getUpsertDetails } f
 import useNotifier from 'utils/useNotifier'
 
 // const
-import { FLOWISE_CREDENTIAL_ID } from 'store/constant'
+import { FLOWISE_CREDENTIAL_ID, urlPrefix } from 'store/constant'
 
 const nodeTypes = { customNode: CanvasNode, stickyNote: StickyNote }
 const edgeTypes = { buttonedge: ButtonEdge }
@@ -170,7 +170,7 @@ const Canvas = () => {
             try {
                 await chatflowsApi.deleteChatflow(chatflow.id)
                 localStorage.removeItem(`${chatflow.id}_INTERNAL`)
-                navigate('/')
+                navigate(urlPrefix + '/')
             } catch (error) {
                 const errorData = error.response.data || `${error.response.status}: ${error.response.statusText}`
                 enqueueSnackbar({
@@ -373,7 +373,7 @@ const Canvas = () => {
             const chatflow = createNewChatflowApi.data
             dispatch({ type: SET_CHATFLOW, chatflow })
             saveChatflowSuccess()
-            window.history.replaceState(null, null, `/canvas/${chatflow.id}`)
+            window.history.replaceState(null, null, `${urlPrefix}/canvas/${chatflow.id}`)
         } else if (createNewChatflowApi.error) {
             const error = createNewChatflowApi.error
             const errorData = error.response.data || `${error.response.status}: ${error.response.statusText}`

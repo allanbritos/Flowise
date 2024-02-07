@@ -87,7 +87,7 @@ const Marketplace = () => {
     }
 
     const goToCanvas = (selectedChatflow) => {
-        navigate(`/marketplace/${selectedChatflow.id}`, { state: selectedChatflow })
+        navigate(urlPrefix + `/marketplace/${selectedChatflow.id}`, { state: selectedChatflow })
     }
 
     const handleChange = (event, newValue) => {
