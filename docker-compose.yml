@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+    flowise:
+        image: nexus.infra.cloud.247-inc.net:5000/butterfly/flowise:1.5.0
+        command: node run start
+        working_dir: /usr/src/packages/packages/server/bin
+        build:
+            context: ./
+            dockerfile: ./Dockerfie.stg
+
+        restart: always
+        environment:
+            - AZURE_OPENAI_BASE_PATH=https://openai-stg-eus.azcloud.247-inc.net/openai/deployments
+            - NO_PROXY=chroma-db,openai-stg-eus.azcloud.247-inc.net
+            - no_proxy=chroma-db,openai-stg-eus.azcloud.247-inc.net
+            - PROXY_TUNNEL=http://127.0.0.1:8080/proxy/openai/v1
+            - PUBLIC_URL=/omni-console/flowise
+            - PORT=8080
+            - FLOWISE_USERNAME=${FLOWISE_USERNAME}
+            - FLOWISE_PASSWORD=${FLOWISE_PASSWORD}
+            - DATABASE_PATH=/data
+            - APIKEY_PATH=${APIKEY_PATH}
+            - LOG_PATH=/log
+            - EXECUTION_MODE=${EXECUTION_MODE}
+            - DEBUG=true
+        ports:
+            - 8080:8080
+        volumes:
+            - .flowise:/root/.flowise

@@ -1,0 +1,76 @@
+# alpine docker includes SSH keys and Maven settings file
+FROM nexus.infra.cloud.247-inc.net:5000/platform-docker/node:18.16.0-bullseye as build
+
+LABEL description="Flowise Backend Build Container"
+
+RUN apt update && apt install libc6-dev python3 make g++ build-essential libcairo2-dev libsdl-pango-dev -y
+
+
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+WORKDIR /app
+COPY package.json yarn.loc[k] ./
+COPY packages/components/package.json ./packages/components/package.json
+COPY packages/ui/package.json ./packages/ui/package.json
+COPY packages/server/package.json ./packages/server/package.json
+
+RUN yarn install --network-timeout 1000000000
+#RUN npm prune --production
+RUN yarn cache clean
+RUN rm -rf /tmp/*
+
+COPY . .
+
+RUN yarn build
+
+FROM nexus.infra.cloud.247-inc.net:5000/platform-docker/node:18.16.0-bullseye-runtime as runtime
+
+# Please specify 
+ARG ARG_BUSINESS_UNIT="butterfly"
+ARG ARG_GIT_ORG="butterfly"
+ARG ARG_GIT_REPO="flowise-backend"
+ARG ARG_GIT_TAG
+ARG ARG_GIT_BRANCH
+ARG ARG_BUILD_HOSTNAME
+ARG ARG_SECRET_PATH="secrets"
+ARG ARG_CONFIG_FILE="omni-console-backend-docker.json,omni-console-backend-logging.json,omni-console-backend-logging-worker.json"
+ARG ARG_CUSTOM_NAMESPACE_PATH="butterfly/callmanager"
+ARG ROTATION_FREQ=hourly
+
+ENV BUSINESS_UNIT=$ARG_BUSINESS_UNIT
+ENV GIT_ORG=$ARG_GIT_ORG
+ENV GIT_REPO=$ARG_GIT_REPO
+ENV GIT_TAG=${ARG_GIT_TAG}
+ENV GIT_BRANCH=${ARG_GIT_BRANCH}
+ENV BUILD_HOSTNAME=${ARG_BUILD_HOSTNAME}
+ENV SECRET_PATH=$ARG_SECRET_PATH
+ENV CONFIG_FILE="$ARG_CONFIG_FILE"
+ENV CUSTOM_NAMESPACE_PATH=$ARG_CUSTOM_NAMESPACE_PATH
+ENV CONFIG_FILE_PATH="/app/config/templates/$ARG_CONFIG_FILE"
+ENV ROTATION_FREQ=$ROTATION_FREQ
+
+RUN mkdir -p /app/ 
+COPY --from=build /app/ /app/
+WORKDIR /app
+
+# Create tellme user( This is required for container to write logs onto host machine and access mount points without issues)
+RUN groupadd -g 4244  docker
+RUN groupadd -g 4242  tellme
+RUN useradd -u 4242 -g 4242  -d /app -s /sbin/nologin  -c "Runtime user" tellme
+RUN usermod -g docker tellme
+
+RUN mkdir -p /opt/runtime/ \
+    && chown -R tellme:docker /opt/runtime/ \
+    && chown -R tellme:docker /app/ \
+    && chown -R tellme:docker /var/run/ \
+    && chown -R tellme:docker /var/log/ \
+    && chown -R tellme:docker /etc/cron.*
+
+#USER tellme
+
+EXPOSE 8080
+#RUN bash
+#9:26:00
+#9:49:00-10:00:00
+#10:02:17-10:12:00

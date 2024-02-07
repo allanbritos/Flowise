@@ -11,7 +11,7 @@ import { IconHierarchy, IconTool } from '@tabler/icons'
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 import ItemCard from 'ui-component/cards/ItemCard'
-import { gridSpacing } from 'store/constant'
+import { gridSpacing, urlPrefix } from 'store/constant'
 import WorkflowEmptySVG from 'assets/images/workflow_empty.svg'
 import ToolDialog from 'views/tools/ToolDialog'
 

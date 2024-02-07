@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import ReactFlow, { Controls, Background, useNodesState, useEdgesState } from 'reactflow'
 import 'reactflow/dist/style.css'
 import 'views/canvas/index.css'
-
+import { urlPrefix } from 'store/constant'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 // material-ui
