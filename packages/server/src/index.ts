@@ -1376,6 +1376,13 @@ export class App {
         })
 
         // ----------------------------------------
+        // HealthCheck
+        // ----------------------------------------
+        this.app.get(basePath + '/api/v1/health', async (req: Request, res: Response) => {
+            return res.status(200).send('OK')
+        })
+
+        // ----------------------------------------
         // Serve UI static
         // ----------------------------------------
 

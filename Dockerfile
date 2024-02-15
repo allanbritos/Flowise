@@ -10,7 +10,7 @@ RUN apk add --update libc6-compat python3 make g++
 RUN apk add --no-cache build-base cairo-dev pango-dev
 
 # Install Chromium
-RUN apk add --no-cache chromium
+# RUN apk add --no-cache chromium
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
@@ -29,13 +29,16 @@ COPY packages/ui/package.json ./packages/ui/package.json
 # Copy server package.json
 COPY packages/server/package.json ./packages/server/package.json
 
-RUN yarn install
+RUN yarn install --network-timeout 1000000000
 
 # Copy app source
 COPY . .
 
-RUN yarn build
+RUN yarn build && yarn cache clean
 
-EXPOSE 3000
+#RUN yarn cache clean
 
-CMD [ "yarn", "start" ]
+#CMD [ "yarn", "start" ]
+#EXPOSE 3000
+
+#CMD [ "yarn", "start" ]

@@ -17,12 +17,12 @@ COPY packages/server/package.json ./packages/server/package.json
 
 RUN yarn install --network-timeout 1000000000
 #RUN npm prune --production
-RUN yarn cache clean
+#RUN yarn cache clean 
 RUN rm -rf /tmp/*
 
 COPY . .
 
-RUN yarn build
+RUN yarn build && yarn cache clean
 
 FROM nexus.infra.cloud.247-inc.net:5000/platform-docker/node:18.16.0-bullseye-runtime as runtime
 

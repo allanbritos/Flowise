@@ -3,6 +3,7 @@ version: '3.1'
 services:
     flowise:
         image: nexus.infra.cloud.247-inc.net:5000/butterfly/flowise-be:1.5.0
+        working_dir: /app
         command: >
             /bin/bash -c "
               sleep 180;
@@ -12,23 +13,40 @@ services:
         build:
             context: ./
             dockerfile: ./Dockerfile.stg
+        ports:
+            - 8080:8080
 
-        restart: always
+        #restart: always
         environment:
+            - SECRETKEY_PATH=/var/run/.flowise
             - PROXY_TUNNEL=http://127.0.0.1:8080/proxy/openai/v1
             - PUBLIC_URL=/omni-console/flowise
             - PORT=8080
             - FLOWISE_USERNAME=${FLOWISE_USERNAME}
             - FLOWISE_PASSWORD=${FLOWISE_PASSWORD}
-            - DATABASE_PATH=/data
+            - DATABASE_PATH=/var/run/.flowise
             - APIKEY_PATH=${APIKEY_PATH}
-            - LOG_PATH=/log
+            - LOG_PATH=/var/log
             - EXECUTION_MODE=${EXECUTION_MODE}
             - DEBUG=true
             - AZURE_OPENAI_BASE_PATH=https://openai-stg-eus.azcloud.247-inc.net/openai/deployments
             - NO_PROXY=chroma-db,openai-stg-eus.azcloud.247-inc.net
             - no_proxy=chroma-db,openai-stg-eus.azcloud.247-inc.net
-        ports:
-            - 8080:8080
+
         volumes:
-            - .flowise:/root/.flowise
+            - mnt-flowise-be-logs:/var/log/:rw
+            - mnt-flowise-data:/var/run/.flowise/:rw
+volumes:
+    mnt-flowise-be-logs:
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: /c/DEV/backends/Flowise/data/log/
+
+    mnt-flowise-data:
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: /c/DEV/backends/Flowise/data/flowise/
