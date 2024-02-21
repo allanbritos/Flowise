@@ -1161,7 +1161,7 @@ export class App {
         // ----------------------------------------
 
         this.app.post(
-            '/api/v1/vector/upsert/:id',
+            basePath + '/api/v1/vector/upsert/:id',
             upload.array('files'),
             (req: Request, res: Response, next: NextFunction) => getRateLimiter(req, res, next),
             async (req: Request, res: Response) => {
@@ -1208,7 +1208,7 @@ export class App {
 
         // Send input message and get prediction result (External)
         this.app.post(
-            '/api/v1/prediction/:id',
+            basePath + '/api/v1/prediction/:id',
             upload.array('files'),
             (req: Request, res: Response, next: NextFunction) => getRateLimiter(req, res, next),
             async (req: Request, res: Response) => {
